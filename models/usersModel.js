@@ -1,48 +1,42 @@
-import mongoose, { mongo } from "mongoose";
-import bcrypt from "bcryptjs";
+import mongoose from "mongoose"; // Import Mongoose for database schema creation
+import bcrypt from "bcryptjs"; // Import bcrypt for password hashing
 
+// Define the schema for the "Users" collection
 const userSchema = mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
-    required: true,
+    required: true, // The first name is a required field
   },
-
+  lastName: {
+    type: String,
+    required: true, // The last name is a required field
+  },
   email: {
     type: String,
-    required: true,
+    required: true, // The email is a required field
   },
-
-  phoneNo: {
-    type: String,
-    required: true,
-  },
-
   password: {
     type: String,
-    required: true,
+    required: true, // The password is a required field
   },
 });
 
-// userSchema.methods.matchPassword = async function (enteredPassword) {
-//   return await bcrypt.compare(enteredPassword, this.password);
-// };
-
-// userSchema.methods.matchPassword = async function (enteredPassword) {
-//   return await bcrypt.compare(enteredPassword, this.password);
-// };
-
+// Define a method for comparing passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Define a pre-save hook to hash the password before saving to the database
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
-    next();
+    next(); // If the password has not been modified, skip the hashing process
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  const salt = await bcrypt.genSalt(10); // Generate a salt for password hashing
+  this.password = await bcrypt.hash(this.password, salt); // Hash the password with the generated salt
 });
 
+// Create the "Users" model using the defined schema
 const Users = mongoose.model("Users", userSchema);
-export default Users;
+
+export default Users; // Export the "Users" model for use in other parts of the application

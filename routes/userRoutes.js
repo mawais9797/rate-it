@@ -1,13 +1,13 @@
-import express from "express";
-import { RegisterUser } from "../controllers/userController.js";
+import express from "express"; // Import the Express framework
 
-const router = express.Router();
+import { RegisterUser, userLogin } from "../controllers/userController.js"; // Import the controller functions for user registration and login
 
-router.post("/registration", RegisterUser);
+const router = express.Router(); // Create an Express router for defining user-related routes
+
+// Route for user registration
+router.post("/registeruser", RegisterUser);
+
+// Route for user login
 router.post("/login", userLogin);
-// router.get("/allusers", allUsers);
-// router.post("/changePassword", changePassword);
-// router.put("/admin/:userId", makeUserAdmin);
-// router.delete("/delete/:userId", deleteuser);
 
-export default router;
+export default router; // Export the router for use in the main application
