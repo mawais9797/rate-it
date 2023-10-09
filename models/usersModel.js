@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"; // Import bcrypt for password hashing
 const userSchema = mongoose.Schema({
   firstName: {
     type: String,
+
     required: true, // The first name is a required field
   },
   lastName: {
